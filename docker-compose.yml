@@ -1,0 +1,41 @@
+version: '1'
+services:
+    nginx:
+        image: nginx:latest
+        ports:
+            - "8080:80"
+            - "443:443"
+        volumes:
+            - ./hosts:/etc/nginx/conf.d
+            - ./www:/var/www
+            - ./logs:/var/log/nginx
+        links:
+            - php
+    php:
+        build: ./images/php
+        links:
+            - mysql
+        volumes:
+            - ./www:/var/www
+    mysql:
+        image: mysql:8
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./mysql:/var/lib/mysql
+        command:
+            - "--innodb_use_native_aio=0"
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - TZ=Asia/Almaty
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        environment:
+            - PMA_ARBITRARY=1
+        restart: always
+        ports:
+            - "8081:80"
+        links:
+            - mysql
+        volumes:
+            - /sessions
