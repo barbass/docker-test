@@ -25,7 +25,18 @@ docker-compose up
 # Получение ip, по которому можно подключиться
 docker-machine ip default
 
+# SSH
+docker-machine ls
+user: docker
+pwd: tcuser
+
+Connect to need container:
+docker ps
+sudo docker exec -i -t 665b4a1e17b6 /bin/bash #by ID
+
 # Phpmyadmin
 192.168.99.100
 root
 root
+
+
